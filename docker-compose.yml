@@ -17,32 +17,39 @@ services:
       - DOLLAR=$$
      command: /bin/bash -c "envsubst < /etc/nginx/conf.d/site.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
   app:
-    image: nemesis/samplestore
-    container_name: nemesis-app
-    ports:
-     - "8111:8111"
-     - "8112:8112"
-    links:
-     - db
-     - redis
-     - solr
-    depends_on:
-     - db
-     - redis
-     - solr
+     image: nemesis/samplestore
+     container_name: nemesis-app
+     ports:
+      - "8111:8111"
+      - "8112:8112"
+     links:
+      - db
+      - redis
+#      - solr
+      - elasticsearch
+     depends_on:
+      - db
+      - redis
+#      - solr
+      - elasticsearch
   db:
-    image: mysql
-    container_name: nemesis-db
-    environment:
-     - MYSQL_ROOT_PASSWORD=admin
-     - MYSQL_DATABASE=samplestore
-     - MYSQL_USER=nemesis
-     - MYSQL_PASSWORD=nemes1s
+     image: mysql
+     container_name: nemesis-db
+     environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=samplestore
+      - MYSQL_USER=nemesis
+      - MYSQL_PASSWORD=nemes1s
   redis:
-    image: redis
-    container_name: nemesis-redis
-  solr:
-    image: solr
-    container_name: nemesis-solr
-    ports:
-     - "8983:8983"
+     image: redis
+     container_name: nemesis-redis
+#  solr:
+#     image: solr
+#     container_name: nemesis-solr
+#     ports:
+#      - "8983:8983"
+  elasticsearch:
+     image: elasticsearch:1.5
+     container_name: nemesis-elasticsearch
+     ports:
+      - "9003:9003"
