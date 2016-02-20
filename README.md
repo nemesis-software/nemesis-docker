@@ -1,2 +1,3 @@
-# nemesis-docker-nginx
-The docker nginx image with all of its nemesis configuration.
+# nemesis-docker
+The docker compose configuration with all of its image configurations(database, redis, search server, nemesis and nginx).
+
