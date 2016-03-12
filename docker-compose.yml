@@ -35,11 +35,8 @@ services:
   db:
      image: mysql
      container_name: nemesis-db
-     environment:
-      - MYSQL_ROOT_PASSWORD=admin
-      - MYSQL_DATABASE=samplestore
-      - MYSQL_USER=nemesis
-      - MYSQL_PASSWORD=nemes1s
+     env_file:
+       - 'dev.env'
   redis:
      image: redis
      container_name: nemesis-redis
