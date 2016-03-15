@@ -1,0 +1,26 @@
+app:
+  image: 'nemesis/samplestore:latest'
+  links:
+    - db
+    - elasticsearch
+    - redis
+  ports:
+    - '8111:8111'
+    - '8112:8112'
+  target_num_containers: 2
+db:
+  image: 'mysql:latest'
+  environment:
+    - MYSQL_DATABASE=samplestore
+    - MYSQL_PASSWORD=nemes1s
+    - MYSQL_ROOT_PASSWORD=admin
+    - MYSQL_USER=nemesis
+elasticsearch:
+  image: 'elasticsearch:1.5'
+  ports:
+    - '9003:9003'
+  target_num_containers: 2
+redis:
+  image: 'redis:latest'
+  target_num_containers: 2
+
