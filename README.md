@@ -28,3 +28,44 @@ default   *        virtualbox   Running   tcp://192.168.99.100:2376           v1
 Then using the IP address in the "URL" column you have to initialize the nemesis samplestore data with `192.168.99.100` instead of `localhost`:
 
 `curl -k -X POST http://nemesis:nemesis@192.168.99.100:8111/platform/database/init`
+
+## How to use docker-cloud
+
+###Install docker cloud
+
+Linux & Windows
+
+`pip install docker-cloud`
+
+MacOS X
+
+` brew install docker-cloud`
+
+More info https://docs.docker.com/docker-cloud/tutorials/installing-cli/
+
+type `docker-cloud -version` to check it is installed properly.
+
+### Login
+
+`docker login`
+
+Alternativly you can export login information as variables
+
+```
+export DOCKERCLOUD_USER=<docker username>
+export DOCKERCLOUD_PASS=<docker password>
+```
+
+### create new stack
+
+`docker-cloud stack create --name hello-world -f docker-cloud.yml`
+
+### start the stack
+
+`docker-cloud stack start 46aca402`
+
+### Initialize the database
+
+`curl -k -X POST http://nemesis:nemesis@app.nemesis.aa552bf1.svc.dockerapp.io:8111/platform/database/init`
+
+Note: app.nemesis.aa552bf1.svc.dockerapp.io:8111 is example host from docker so you need to specify your service host
