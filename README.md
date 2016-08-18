@@ -7,6 +7,16 @@ The docker compose configuration with all of its image configurations(database, 
 
 `docker-compose up`
 
+MacOS X note
+
+If you get ERROR: Couldn't connect to Docker daemon - you might need to run `docker-machine start default`.
+You may need to run this two extra steps:
+
+`eval "$(docker-machine env default)"`
+
+`docker-machine start default`
+
+
 ### Initialize the database
 
 After the nemesis application is started you have to initialize the database with the samplestore data.
