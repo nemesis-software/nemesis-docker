@@ -12,9 +12,9 @@ MacOS X note
 If you get ERROR: Couldn't connect to Docker daemon - you might need to run `docker-machine start default`.
 You may need to run this two extra steps:
 
-`eval "$(docker-machine env default)"`
-
 `docker-machine start default`
+
+`eval "$(docker-machine env default)"`
 
 
 ### Initialize the database
