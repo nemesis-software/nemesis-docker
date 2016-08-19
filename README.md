@@ -79,3 +79,14 @@ export DOCKERCLOUD_PASS=<docker password>
 `curl -k -X POST http://nemesis:nemesis@app.nemesis.aa552bf1.svc.dockerapp.io:8111/platform/database/init`
 
 Note: app.nemesis.aa552bf1.svc.dockerapp.io:8111 is example host from docker so you need to specify your service host
+=======
+To run it follow:
+ - docker-compose up -d
+ - docker-compose logs
+
+To initialize the site:
+ - curl -k -X POST http://nemesis:nemesis@localhost:8111/platform/database/init
+
+To stop it:
+ - docker-compose down
+
