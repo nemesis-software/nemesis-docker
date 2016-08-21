@@ -16,6 +16,19 @@ You may need to run this two extra steps:
 
 `eval "$(docker-machine env default)"`
 
+=======
+### Delete volumes
+Docker compose tries really hard to keep volumes across container restarts, so if you screw your /var/lib/mysql directory the database from the envvar would not be recreated.
+If this happens you can try to delete the volumes with 
+````
+docker-compose rm -fv 
+````
+
+and then 
+````
+docker-compose up -d
+````
+ again.
 
 ### Initialize the database
 
@@ -41,7 +54,7 @@ Then using the IP address in the "URL" column you have to initialize the nemesis
 
 ## How to use docker-cloud
 
-###Install docker cloud
+### Install docker cloud
 
 Linux & Windows
 
@@ -66,7 +79,7 @@ export DOCKERCLOUD_USER=<docker username>
 export DOCKERCLOUD_PASS=<docker password>
 ```
 
-### create new stack
+### Create new stack
 
 `docker-cloud stack create --name hello-world -f docker-cloud.yml`
 
@@ -76,7 +89,7 @@ export DOCKERCLOUD_PASS=<docker password>
 
 ### Initialize the database
 
-`curl -k -X POST http://nemesis:nemesis@app.nemesis.aa552bf1.svc.dockerapp.io:8111/platform/database/init`
+`curl -k -X POST http://nemesis:nemesis@localhost:8111/platform/database/init`
 
 Note: app.nemesis.aa552bf1.svc.dockerapp.io:8111 is example host from docker so you need to specify your service host
 =======
