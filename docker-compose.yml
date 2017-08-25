@@ -33,6 +33,15 @@ services:
       - redis
 #      - solr
       - elasticsearch
+  console:
+     image: nemesis/nemesis-console-v2
+     container_name: nemesis-console-v2
+     ports:
+      - "8443:8443"
+     links:
+      - "nginx:solar.local"
+     depends_on:
+      - app
   db:
      image: mysql
      command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
@@ -48,7 +57,7 @@ services:
 #     ports:
 #      - "8080:8080"
   elasticsearch:
-     image: elasticsearch:1.5
+     image: elasticsearch:2.4.5
      container_name: nemesis-elasticsearch
      ports:
       - "9003:9003"
