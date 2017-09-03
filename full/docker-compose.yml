@@ -1,4 +1,4 @@
-version: '2'
+version: '3.3'
 services:
   nginx:
      image: nginx:1.13.12-alpine
@@ -17,8 +17,10 @@ services:
       - DOLLAR=$$
      command: /bin/sh -c "envsubst < /etc/nginx/conf.d/site.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
   app:
-     image: nemesis/samplestore
+     image: nemesis/samplestore:latest
      container_name: nemesis-app
+     environment:
+         spring.profiles.active: docker
      ports:
       - "8111:8111"
       - "8112:8112"
@@ -52,6 +54,7 @@ services:
      container_name: nemesis-redis
   elasticsearch:
      image: docker.elastic.co/elasticsearch/elasticsearch:5.6.9
+     image: elasticsearch:2.4.0
      container_name: nemesis-elasticsearch
      environment:
       - cluster.name=nemesis-cluster
@@ -77,6 +80,24 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_INSTALL_PLUGINS=grafana-worldmap-panel,briangann-gauge-panel,grafana-clock-panel
+     links:
+      - prometheus
+     ports:
+      - "9003:9003"      
+  prometheus:
+     image: prom/prometheus
+     container_name: nemesis-prometheus
+     volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+     ports:
+      - "9090:9090"   
+     links:
+      - nginx
+     depends_on:
+      - nginx
+  grafana:
+     image: grafana/grafana
+     container_name: nemesis-grafana
      links:
       - prometheus
      ports:

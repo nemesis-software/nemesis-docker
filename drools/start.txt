@@ -1,0 +1,7 @@
+docker run -p 15672:15672 --hostname rabbitmq --name rabbitmq bitnami/rabbitmq:latest
+
+sudo ip addr show docker0
+
+docker run -p 8080:8080 -p 8001:8001 -p 9418:9418 -e KIE_DEMO=false -e NEMESIS_REPOSITORY_HTTP_PASSWORD=8Rw1e0eLcCyrBwAh3ZsiILzWBCOWtyC8 --name drools-workbench jboss/drools-workbench-showcase:latest
+
+docker run -p 8180:8080 --name kie-server --link drools-workbench:kie_wb jboss/kie-server-showcase:latest

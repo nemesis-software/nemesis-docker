@@ -1,0 +1,19 @@
+version: '2'
+services:
+  drools-workbench:
+     image: jboss/drools-workbench-showcase:latest
+     container_name: drools-workbench
+     ports:
+      - "8080:8080"
+      - "8001:8001"
+     environment:
+      - KIE_DEMO=false
+  kie-server:
+     image: jboss/kie-server-showcase:latest
+     container_name: kie-server
+     ports:
+      - "8180:8080"
+     links:
+      - drools-workbench
+     depends_on:
+      - drools-workbench
