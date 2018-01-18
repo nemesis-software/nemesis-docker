@@ -20,8 +20,8 @@ services:
      image: nemesis/samplestore
      container_name: nemesis-app
      ports:
-      - "8111:8111"
-      - "8112:8112"
+      - "${APP_HTTP_PORT}:8111"
+      - "${APP_SSL_PORT}:8112"
       - "2000:2000"
      links:
       - db
@@ -37,7 +37,7 @@ services:
      image: nemesis/nemesis-console-v2
      container_name: nemesis-console-v2
      ports:
-      - "8443:8443"
+      - "${CONSOLE_PORT}:8443"
      links:
       - "nginx:solar.local"
      depends_on:
