@@ -1,7 +1,7 @@
 version: '2'
 services:
   nginx:
-     image: nginx
+     image: nginx:1.13.12-alpine
      container_name: nemesis-nginx
      volumes:
       - ./site.template:/etc/nginx/conf.d/site.template
@@ -22,42 +22,38 @@ services:
      ports:
       - "8111:8111"
       - "8112:8112"
-      - "2000:2000"
+      - "8000:8000"
      links:
       - db
       - redis
-#      - solr
       - elasticsearch
      depends_on:
       - db
       - redis
-#      - solr
       - elasticsearch
   console:
-     image: nemesis/nemesis-console-v2
-     container_name: nemesis-console-v2
+     image: nemesis/console
+     container_name: nemesis-console
      ports:
       - "8443:8443"
      links:
       - "nginx:solar.local"
-     depends_on:
-      - app
   db:
-     image: mysql
+     image: mysql:5.6.40
      command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
      container_name: nemesis-db
      env_file:
        - 'dev.env'
   redis:
-     image: redis
+     image: redis:4.0.9-alpine
      container_name: nemesis-redis
-#  solr:
-#     image: tehes/solr-4.9.0
-#     container_name: nemesis-solr
-#     ports:
-#      - "8080:8080"
   elasticsearch:
-     image: elasticsearch:2.4.5
+     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.9
      container_name: nemesis-elasticsearch
+     environment:
+      - cluster.name=nemesis-cluster
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
      ports:
-      - "9003:9003"
+      - "9300:9300"
+      - "9200:9200"
