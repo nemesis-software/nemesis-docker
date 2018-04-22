@@ -1,7 +1,7 @@
 version: '2'
 services:
   nginx:
-     image: nginx:1.13.12-alpine
+     image: nginx:1.13.12
      container_name: nemesis-nginx
      volumes:
       - ./site.template:/etc/nginx/conf.d/site.template
@@ -55,3 +55,23 @@ services:
      ports:
       - "9300:9300"
       - "9200:9200"
+  prometheus:
+     image: prom/prometheus
+     container_name: nemesis-prometheus
+     volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+     command:
+      - --config.file=/etc/prometheus/prometheus.yml
+     ports:
+      - "9090:9090"
+  grafana:
+     image: grafana/grafana
+     container_name: nemesis-grafana
+     environment:
+      - GF_SECURITY_ADMIN_PASSWORD=nimda
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+     links:
+      - prometheus
+     ports:
+      - "3000:3000"
