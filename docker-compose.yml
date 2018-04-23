@@ -1,7 +1,7 @@
 version: '2'
 services:
   nginx:
-     image: nginx:1.13.12
+     image: nginx:1.13.12-alpine
      container_name: nemesis-nginx
      volumes:
       - ./site.template:/etc/nginx/conf.d/site.template
@@ -15,7 +15,7 @@ services:
      environment:
       - NGINX_HOST=test
       - DOLLAR=$$
-     command: /bin/bash -c "envsubst < /etc/nginx/conf.d/site.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+     command: /bin/sh -c "envsubst < /etc/nginx/conf.d/site.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
   app:
      image: nemesis/samplestore
      container_name: nemesis-app
