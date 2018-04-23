@@ -71,6 +71,7 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=nimda
       - GF_SECURITY_ADMIN_USER=admin
       - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=grafana-worldmap-panel,briangann-gauge-panel,grafana-clock-panel
      links:
       - prometheus
      ports:
