@@ -18,13 +18,9 @@ services:
      command: /bin/sh -c "envsubst < /etc/nginx/conf.d/site.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
   app:
      image: nemesis/samplestore:latest
-     container_name: nemesis-app
+     restart: always
      environment:
          spring.profiles.active: docker
-     ports:
-      - "8111:8111"
-      - "8112:8112"
-      - "8000:8000"
      environment:
       - NEMESIS_PLATFORM_CONSOLE_URL=https://207.154.222.231:8443/backend/
      links:

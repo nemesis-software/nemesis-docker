@@ -52,6 +52,14 @@ Then using the IP address in the "URL" column you have to initialize the nemesis
 
 `curl -k -X POST http://nemesis:nemesis@192.168.99.100:8111/platform/database/init`
 
+### Scale instances up and down
+Now that you have the docker compose running, you can start scaling instances up and down according to your wishes:
+
+```
+docker-compose scale app=2
+```
+The above command will scale the application instances to 2.
+
 ## How to use docker-cloud
 
 ### Install docker cloud
