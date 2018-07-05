@@ -16,7 +16,6 @@ You may need to run this two extra steps:
 
 `eval "$(docker-machine env default)"`
 
-=======
 ### Delete volumes
 Docker compose tries really hard to keep volumes across container restarts, so if you screw your /var/lib/mysql directory the database from the envvar would not be recreated.
 If this happens you can try to delete the volumes with 
@@ -100,7 +99,6 @@ export DOCKERCLOUD_PASS=<docker password>
 `curl -k -X POST http://nemesis:nemesis@localhost:8111/platform/database/init`
 
 Note: app.nemesis.aa552bf1.svc.dockerapp.io:8111 is example host from docker so you need to specify your service host
-=======
 To run it follow:
  - `docker-compose up -d`
  - `docker-compose logs`
