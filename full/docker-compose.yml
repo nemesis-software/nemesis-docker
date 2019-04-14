@@ -4,9 +4,9 @@ services:
      image: nginx:1.13.12-alpine
      container_name: nemesis-nginx
      volumes:
-      - ./site.template:/etc/nginx/conf.d/site.template
-      - ./server.crt:/etc/nginx/ssl/server.crt
-      - ./server.key:/etc/nginx/ssl/server.key
+      - ./nginx/site.template:/etc/nginx/conf.d/site.template
+      - ./nginx/server.crt:/etc/nginx/ssl/server.crt
+      - ./nginx/server.key:/etc/nginx/ssl/server.key
      ports:
       - "80:80"
       - "443:443"
@@ -22,7 +22,7 @@ services:
      environment:
          spring.profiles.active: docker
      environment:
-      - NEMESIS_PLATFORM_CONSOLE_URL=https://207.154.222.231:8443/backend/
+      - NEMESIS_PLATFORM_CONSOLE_URL=https://${DOCKER_HOST_IP}:8443/backend/
      ports:
       - "8000:8000"
      links:
@@ -40,14 +40,14 @@ services:
      ports:
       - "8443:8443"
      environment:
-      - NEMESIS_CONSOLE_WEBSITE_URL=https://207.154.222.231/
-      - NEMESIS_CONSOLE_WEBSITE_REST_URL=https://207.154.222.231/rest/
+      - NEMESIS_CONSOLE_WEBSITE_URL=https://${DOCKER_HOST_IP}/
+      - NEMESIS_CONSOLE_WEBSITE_REST_URL=https://${DOCKER_HOST_IP}/rest/
   db:
      image: mysql:5.6.40
      command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
      container_name: nemesis-db
      env_file:
-       - 'dev.env'
+       - './mysql/dev.env'
   redis:
      image: redis:4.0.9-alpine
      container_name: nemesis-redis
@@ -81,7 +81,7 @@ services:
       - '9600:9600'
      command: logstash -f /usr/share/logstash/pipeline/logstash.conf
      volumes:
-      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
      links:
       - elasticsearch
      depends_on:
@@ -105,6 +105,9 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_INSTALL_PLUGINS=grafana-worldmap-panel,briangann-gauge-panel,grafana-clock-panel
+     volumes:
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - ./grafana/dashboards/:/var/lib/grafana/dashboards/
      links:
       - prometheus
      ports:
@@ -113,7 +116,7 @@ services:
      image: prom/prometheus
      container_name: nemesis-prometheus
      volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
      command:
       - --config.file=/etc/prometheus/prometheus.yml
      ports:

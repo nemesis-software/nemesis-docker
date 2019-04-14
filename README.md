@@ -5,7 +5,7 @@ The docker compose configuration with all of its image configurations(database, 
 
 ### Starting the project
 
-`docker-compose up`
+`echo "DOCKER_HOST_IP=$(curl ifconfig.me)" >.env && docker-compose up -d`
 
 MacOS X note
 
