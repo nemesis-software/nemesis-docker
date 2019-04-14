@@ -5,8 +5,8 @@ scrape_configs:
   basic_auth:
       username: admin
       password: nimda
-  metrics_path: /storefront/platform/prometheus
+  metrics_path: /platform/prometheus
   scheme: http
   static_configs:
   - targets:
-    - 172.17.0.1:8111
+    - 178.128.92.58
