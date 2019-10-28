@@ -1,126 +1,126 @@
 version: '2'
 services:
   nginx:
-     image: nginx:1.13.12-alpine
-     container_name: nemesis-nginx
-     volumes:
+    image: nginx:1.13.12-alpine
+    container_name: nemesis-nginx
+    volumes:
       - ./nginx/site.template:/etc/nginx/conf.d/site.template
       - ./nginx/server.crt:/etc/nginx/ssl/server.crt
       - ./nginx/server.key:/etc/nginx/ssl/server.key
-     ports:
+    ports:
       - "80:80"
       - "443:443"
-     links:
+    links:
       - app
-     environment:
+    environment:
       - NGINX_HOST=test
       - DOLLAR=$$
-     command: /bin/sh -c "envsubst < /etc/nginx/conf.d/site.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+    command: /bin/sh -c "envsubst < /etc/nginx/conf.d/site.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
   app:
-     image: nemesis/samplestore:latest
-     container_name: nemesis-app
-     environment:
+    image: nemesis/samplestore:latest
+    container_name: nemesis-app
+    environment:
       - spring.profiles.active=docker
       - NEMESIS_PLATFORM_CONSOLE_URL=https://${DOCKER_HOST_IP}:8443/backend/
-     ports:
+    ports:
       - "8000:8000"
-     links:
+    links:
       - db
       - redis
       - elasticsearch
       - logstash
-     depends_on:
+    depends_on:
       - db
       - redis
       - elasticsearch
   console:
-     image: nemesis/console
-     container_name: nemesis-console
-     ports:
+    image: nemesis/console
+    container_name: nemesis-console
+    ports:
       - "8443:8443"
-     environment:
+    environment:
       - NEMESIS_CONSOLE_WEBSITE_URL=https://${DOCKER_HOST_IP}/
       - NEMESIS_CONSOLE_WEBSITE_REST_URL=https://${DOCKER_HOST_IP}/rest/
   db:
-     image: mysql:5.6.40
-     command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
-     container_name: nemesis-db
-     env_file:
-       - './mysql/dev.env'
+    image: mysql:5.6.40
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
+    container_name: nemesis-db
+    env_file:
+      - './mysql/dev.env'
   redis:
-     image: redis:4.0.9-alpine
-     container_name: nemesis-redis
- # the host needs this sudo sysctl -w vm.max_map_count=262144
+    image: redis:4.0.9-alpine
+    container_name: nemesis-redis
+  # the host needs this sudo sysctl -w vm.max_map_count=262144
   elasticsearch:
-     image: docker.elastic.co/elasticsearch/elasticsearch:6.8.3
-     container_name: nemesis-elasticsearch
-     hostname: nemesis-elasticsearch
-     ulimits:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.3
+    container_name: nemesis-elasticsearch
+    hostname: nemesis-elasticsearch
+    ulimits:
       memlock:
         soft: -1
         hard: -1
       nofile:
         soft: 65536
         hard: 65536
-     mem_limit: 4g
-     cap_add:
+    mem_limit: 4g
+    cap_add:
       - IPC_LOCK
-     environment:
+    environment:
       - cluster.name=nemesis-cluster
-      - "ES_JAVA_OPTS=-Xms1750m -Xmx1750m"
+      - ES_JAVA_OPTS=-Xms1750m -Xmx1750m
       - xpack.security.enabled=false
-     ports:
+    ports:
       - "9300:9300"
       - "9200:9200"
   logstash:
-     image: docker.elastic.co/logstash/logstash:6.4.3
-     container_name: nemesis-logstash
-     ports:
+    image: docker.elastic.co/logstash/logstash:6.4.3
+    container_name: nemesis-logstash
+    ports:
       - '5000:5000'
       - '9600:9600'
-     command: logstash -f /usr/share/logstash/pipeline/logstash.conf
-     volumes:
+    command: logstash -f /usr/share/logstash/pipeline/logstash.conf
+    volumes:
       - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
-     links:
+    links:
       - elasticsearch
-     depends_on:
+    depends_on:
       - elasticsearch
   kibana:
-     image: docker.elastic.co/kibana/kibana:6.4.3
-     container_name: nemesis-kibana
-     environment:
+    image: docker.elastic.co/kibana/kibana:6.8.3
+    container_name: nemesis-kibana
+    environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
-     ports:
+    ports:
       - '5601:5601'
-     links:
+    links:
       - elasticsearch
-     depends_on:
+    depends_on:
       - elasticsearch
   grafana:
-     image: grafana/grafana
-     container_name: nemesis-grafana
-     environment:
+    image: grafana/grafana
+    container_name: nemesis-grafana
+    environment:
       - GF_SECURITY_ADMIN_PASSWORD=nimda
       - GF_SECURITY_ADMIN_USER=admin
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_INSTALL_PLUGINS=grafana-worldmap-panel,briangann-gauge-panel,grafana-clock-panel
-     volumes:
+    volumes:
       - ./grafana/provisioning/:/etc/grafana/provisioning/
       - ./grafana/dashboards/:/var/lib/grafana/dashboards/
-     links:
+    links:
       - prometheus
-     ports:
+    ports:
       - "3000:3000"
   prometheus:
-     image: prom/prometheus
-     container_name: nemesis-prometheus
-     volumes:
+    image: prom/prometheus
+    container_name: nemesis-prometheus
+    volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-     command:
+    command:
       - --config.file=/etc/prometheus/prometheus.yml
-     ports:
+    ports:
       - "9090:9090"
-     links:
+    links:
       - nginx
-     depends_on:
+    depends_on:
       - nginx
