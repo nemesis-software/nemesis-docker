@@ -20,7 +20,7 @@ services:
      image: nemesis/democms:latest
      container_name: nemesis-app
      environment:
-      - spring.profiles.active: docker
+      - spring.profiles.active=docker
       - NEMESIS_PLATFORM_CONSOLE_URL=https://${DOCKER_HOST_IP}:8443/backend/
      ports:
       - "8000:8000"
@@ -28,7 +28,6 @@ services:
       - db
       - redis
       - elasticsearch
-      - logstash
      depends_on:
       - db
       - redis

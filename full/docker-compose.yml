@@ -20,7 +20,7 @@ services:
      image: nemesis/samplestore:latest
      container_name: nemesis-app
      environment:
-      - spring.profiles.active: docker
+      - spring.profiles.active=docker
       - NEMESIS_PLATFORM_CONSOLE_URL=https://${DOCKER_HOST_IP}:8443/backend/
      ports:
       - "8000:8000"
