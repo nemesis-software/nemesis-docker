@@ -20,6 +20,7 @@ services:
     image: nemesis/democms:latest
     container_name: nemesis-app
     environment:
+      - "NEMESIS_JAVA_OPTS=-Xms3g -Xmx3g -Xss512K -XX:MaxMetaspaceSize=512m -XX:ReservedCodeCacheSize=512m -XX:CompressedClassSpaceSize=128m -XX:+HeapDumpOnOutOfMemoryError"
       - spring.profiles.active=docker
       - NEMESIS_PLATFORM_CONSOLE_URL=https://${DOCKER_HOST_IP}:8443/backend/
     ports:
@@ -46,6 +47,8 @@ services:
     container_name: nemesis-db
     env_file:
       - './mysql/dev.env'
+    security_opt:
+      - seccomp:unconfined
   redis:
     image: redis:4.0.9-alpine
     container_name: nemesis-redis
@@ -66,7 +69,7 @@ services:
       - IPC_LOCK
     environment:
       - cluster.name=nemesis-cluster
-      - ES_JAVA_OPTS=-Xms1240m -Xmx1240m
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
       - xpack.security.enabled=false
     ports:
       - "9300:9300"
