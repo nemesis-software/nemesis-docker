@@ -20,7 +20,7 @@ services:
     image: nemesis/democms:latest
     container_name: nemesis-app
     environment:
-      - "NEMESIS_JAVA_OPTS=-Xms1g -Xmx1g -Xss512K -XX:MaxMetaspaceSize=512m -XX:ReservedCodeCacheSize=512m -XX:CompressedClassSpaceSize=128m -XX:+HeapDumpOnOutOfMemoryError"
+      - "NEMESIS_JAVA_OPTS=-Xms1.5g -Xmx1.5g -Xss512K -XX:MaxMetaspaceSize=512m -XX:ReservedCodeCacheSize=512m -XX:CompressedClassSpaceSize=128m -XX:+HeapDumpOnOutOfMemoryError"
       - spring.profiles.active=docker
       - NEMESIS_PLATFORM_CONSOLE_URL=https://${DOCKER_HOST_IP}:8443/backend/
     ports:
