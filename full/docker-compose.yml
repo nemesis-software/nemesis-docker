@@ -29,7 +29,7 @@ services:
       - db
       - redis
       - elasticsearch
-      - logstash
+#      - logstash
     depends_on:
       - db
       - redis
