@@ -23,6 +23,9 @@ services:
       - spring.profiles.active=docker
       - "NEMESIS_JAVA_OPTS=-Xms6g -Xmx6g -Xss512K -XX:MaxMetaspaceSize=512m -XX:ReservedCodeCacheSize=512m -XX:CompressedClassSpaceSize=128m -XX:+HeapDumpOnOutOfMemoryError"
       - NEMESIS_PLATFORM_CONSOLE_URL=https://${DOCKER_HOST_IP}:8443/backend/
+      - MYSQL_HOSTNAME=nemesis-db
+      - MYSQL_ROOT_USER=nemesis
+      - MYSQL_ROOT_PASSWORD=nemes1s
     ports:
       - "8000:8000"
     links:
