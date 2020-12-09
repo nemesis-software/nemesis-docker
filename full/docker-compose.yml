@@ -26,6 +26,7 @@ services:
       - MYSQL_HOSTNAME=nemesis-db
       - MYSQL_ROOT_USER=nemesis
       - MYSQL_ROOT_PASSWORD=nemes1s
+      - MYSQL_PORT=33060
     ports:
       - "8000:8000"
     links:
