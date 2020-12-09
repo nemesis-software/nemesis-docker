@@ -28,6 +28,7 @@ services:
       - MYSQL_ROOT_PASSWORD=admin
     ports:
       - "8000:8000"
+      - "8111:8111"
     links:
       - db
       - redis
