@@ -1,21 +1,21 @@
 version: '2'
 services:
-#  nginx:
-#    image: nginx:1.13.12-alpine
-#    container_name: nemesis-nginx
-#    volumes:
-#      - ./nginx/site.template:/etc/nginx/conf.d/site.template
-#      - ./nginx/server.crt:/etc/nginx/ssl/server.crt
-#      - ./nginx/server.key:/etc/nginx/ssl/server.key
-#    ports:
-#      - "80:80"
-#      - "443:443"
-#    links:
-#      - app
-#    environment:
-#      - NGINX_HOST=test
-#      - DOLLAR=$$
-#    command: /bin/sh -c "envsubst < /etc/nginx/conf.d/site.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+  #  nginx:
+  #    image: nginx:1.13.12-alpine
+  #    container_name: nemesis-nginx
+  #    volumes:
+  #      - ./nginx/site.template:/etc/nginx/conf.d/site.template
+  #      - ./nginx/server.crt:/etc/nginx/ssl/server.crt
+  #      - ./nginx/server.key:/etc/nginx/ssl/server.key
+  #    ports:
+  #      - "80:80"
+  #      - "443:443"
+  #    links:
+  #      - app
+  #    environment:
+  #      - NGINX_HOST=test
+  #      - DOLLAR=$$
+  #    command: /bin/sh -c "envsubst < /etc/nginx/conf.d/site.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
   app:
     image: nemesis/samplestore:latest
     container_name: nemesis-app
@@ -24,8 +24,8 @@ services:
       - "NEMESIS_JAVA_OPTS=-Xms6g -Xmx6g -Xss512K -XX:MaxMetaspaceSize=512m -XX:ReservedCodeCacheSize=512m -XX:CompressedClassSpaceSize=128m -XX:+HeapDumpOnOutOfMemoryError"
       - NEMESIS_PLATFORM_CONSOLE_URL=https://${DOCKER_HOST_IP}:8443/backend/
       - MYSQL_HOSTNAME=nemesis-db
-      - MYSQL_ROOT_USER=nemesis
-      - MYSQL_ROOT_PASSWORD=nemes1s
+      - MYSQL_ROOT_USER=root
+      - MYSQL_ROOT_PASSWORD=admin
       - MYSQL_PORT=33060
     ports:
       - "8000:8000"
@@ -33,7 +33,7 @@ services:
       - db
       - redis
       - elasticsearch
-#      - logstash
+    #      - logstash
     depends_on:
       - db
       - redis
