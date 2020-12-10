@@ -73,9 +73,9 @@ services:
     cap_add:
       - IPC_LOCK
     environment:
-      - cluster.name=nemesis-cluster
       - "ES_JAVA_OPTS=-Xms1750m -Xmx1750m"
       - xpack.security.enabled=false
+      - discovery.type=single-node
     ports:
       - "9300:9300"
       - "9200:9200"
