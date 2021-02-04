@@ -76,6 +76,8 @@ services:
       - "ES_JAVA_OPTS=-Xms1750m -Xmx1750m"
       - xpack.security.enabled=false
       - discovery.type=single-node
+      - thread_pool.search.queue_size=1000
+      - thread_pool.write.queue_size=1000
     ports:
       - "9300:9300"
       - "9200:9200"
